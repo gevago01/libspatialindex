@@ -11,3 +11,4 @@ A simple example of the library that loads points into an R-Tree. Since the exam
 1. The application was built in a way that it does not use more memory than the data themselves 
 2. Requires cmake version 3.6
 3. Assumes libspatialindex is properly installed (see [here how to install](https://github.com/libspatialindex/libspatialindex/wiki/1.-Getting-Started) )
+4. A **sample file** is provided
