@@ -97,7 +97,11 @@ uint32_t CallSpatialLib::call_lib_spatial(Point const &point) {
     return std::stol(visitor.getCluster_id());
 }
 
-
+/**
+ * The method counts the number of points and finds
+ * out the dimensionality of the data
+ * @return
+ */
 uint32_t CallSpatialLib::getDimensionality() {
 
     uint32_t dimensionality=0;
