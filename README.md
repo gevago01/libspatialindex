@@ -8,7 +8,14 @@ A simple example of the library that loads points into an R-Tree. Since the exam
 4. It queries the R-Tree and estimates the average time for retrieving a point. It also estimates the error of the measurements 
 
 ## Notes:
-1. The application was built in a way that it does not use more memory than the data themselves 
+1. The application was built in a way that it does not use more memory than the data itself 
 2. Requires cmake version 3.6
 3. Assumes libspatialindex is properly installed (see [here how to install](https://github.com/libspatialindex/libspatialindex/wiki/1.-Getting-Started) )
 4. A **sample file** is provided
+
+## How to run
+mkdir build
+cd build
+cmake ..
+make
+./SpatialIndexRtree sample
