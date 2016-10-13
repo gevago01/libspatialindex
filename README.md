@@ -13,9 +13,11 @@ A simple example of the library that loads points into an R-Tree. Since the exam
 3. Assumes libspatialindex is properly installed (see [here how to install](https://github.com/libspatialindex/libspatialindex/wiki/1.-Getting-Started) )
 4. A **sample file** is provided
 
-## How to run
+## How to run on Linux
+```bash
 mkdir build
 cd build
 cmake ..
 make
-./SpatialIndexRtree sample
+./SpatialIndexRtree sample.txt
+```
