@@ -1,5 +1,5 @@
 # libspatialindex example
-A simple example of the library that loads points into an R-Tree. Since the example was adapted from an existing project,  it contains some unnecessary stuff such as using a custom-made class "Point.h" and assuming that each point belongs to a cluster. However, these assumptions do not affect the clarity of the example. 
+A simple example of the library that loads points into an **in-memory** R-Tree. The points are inserted using the standard insertion procedure of R*-Tree - no bulkloading. Since the example was adapted from an existing project,  it contains some unnecessary stuff such as using a custom-made class "Point.h" and assuming that each point belongs to a cluster. However, these assumptions do not affect the clarity of the example. 
 
 ## The application does the following:
 1. Reads the points from a file and inserts them directly into the R-Tree - no intermediate structure is used as this can easily fill up your memory when dealing with big data. I have used **valgrind massif** to verify that memory usage is equal to the size of the input
