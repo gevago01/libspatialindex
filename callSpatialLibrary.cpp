@@ -97,71 +97,11 @@ uint32_t CallSpatialLib::call_lib_spatial(Point const &point) {
     return std::stol(visitor.getCluster_id());
 }
 
-/**
- * The method counts the number of points and finds
- * out the dimensionality of the data
- * @return
- */
-uint32_t CallSpatialLib::getDimensionality() {
-
-    uint32_t dimensionality=0;
-    if (!in_file_stream) {
-        cout << "failed to read input" << endl;
-        exit(-1);
-    }
-    std::string line;
-
-    bool first_point = true;
-    while (getline(in_file_stream, line)) {
-
-        //ignore comment lines
-        if (line[0] == '#') {
-            continue;
-        } else {
-
-            if (first_point) {
-                std::string word;
-                //istringstream makes the line string an input string stream
-                std::istringstream record(line);
-                vector<std::string> tokens;
-                /*a record contains a number of coordinates and a cluster id:
-                    2.58119273751133 -3.0897997256242977 1*/
-                while (record >> word) {
-                    tokens.push_back(word);
-                }
-                Point point(tokens);
-                tokens.clear();
-                dimensionality = point.getCoordinates().size();
-                std::cout << "Dimensionality is:" << dimensionality << std::endl;
-            }
-            //count the points in the file
-            ++num_of_points;
-
-            first_point = false;
-        }
-
-
-    }
-
-
-    std::cout << "num of points:" << num_of_points << std::endl;
-    return dimensionality;
-
-}
 
 std::vector<Point> CallSpatialLib::getRandomPoints() {
 
     return random_points;
 
-}
-
-void CallSpatialLib::findRandomIndices() {
-
-    srand(time(NULL));
-    while (random_indices.size() != measurements) {
-        int randNum = rand() % (num_of_points);
-        random_indices.insert(randNum);
-    }
 }
 
 

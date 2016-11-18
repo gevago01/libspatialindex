@@ -87,28 +87,109 @@ private:
     std::unique_ptr<SpatialIndex::ISpatialIndex> tree_;
 //    std::unique_ptr<SpatialIndex::RTree::RTree> tree_;
     uint32_t max_clusterid;
-
+    uint32_t cluster_size;
+    std::ifstream m_fin;
     std::string file_name;
 
     std::ifstream in_file_stream;
     long file_size;
     uint32_t num_of_points;
+    uint32_t num_of_clusters;
     std::set<uint32_t> random_indices;
     uint32_t measurements;
     std::vector<Point> random_points;
-
+    uint32_t dimensionality;
 
 public:
 
-    uint32_t getDimensionality();
+    void findRandomIndices() {
+        auto n=0;
+        if (num_of_points<measurements){
+            n=num_of_points;
+        }
+        else{
+            n=measurements;
+        }
+        srand(time(NULL));
+        while (random_indices.size() != n) {
+            int randNum = rand() % (num_of_points);
+            random_indices.insert(randNum);
+        }
+    }
 
-    void findRandomIndices();
+
+    void readHeaders() {
+        if (!m_fin) {
+            std::cout << "failed to read input" << std::endl;
+            exit(-1);
+        }
+        std::string line, word;
+        std::vector<std::string> tokens;
+        bool num_of_points_done = false;
+        while (getline(m_fin, line)) {
+
+            if (num_of_points_done) {
+                break;
+            }
+            //check comment lines
+            if (line[0] == '#') {
+                num_of_points_done = getFileStats(line);
+                continue;
+            }
+
+
+        }
+    }
+
+
+    bool getFileStats(std::string line) {
+
+        //if line contains the number of clusters
+        if ((line.find("Number of clusters") != std::string::npos)) {
+            std::stringstream file_info(line);
+            std::string temp_str;
+            // go to the last token
+            while (file_info >> temp_str);
+            //last token of line is the # of clusters
+            num_of_clusters = std::stol(temp_str);
+            std::cout << "Number of clusters:"<< num_of_clusters << std::endl;
+
+            return false;
+        }
+
+        if ((line.find("Size") != std::string::npos)) {
+            std::istringstream file_info(line);
+            std::string temp_str;
+            // go to the last token
+            while (file_info >> temp_str){
+                ++dimensionality;
+            }
+            //last token is cluster size
+            cluster_size = std::stol(temp_str);
+            std::cout << "Cluster size:" << cluster_size << std::endl;
+            max_clusterid = num_of_clusters;
+            num_of_points = num_of_clusters * cluster_size;
+            std::cout << "Number of points:" << num_of_points << std::endl;
+            std::cout << "Dimensionality:" << dimensionality << std::endl;
+            return true;
+        }
+        return false;
+    }
+
 
     CallSpatialLib(char *filename, uint32_t num_of_queries)
-            : properties_(nullptr), storageManager_(nullptr), tree_(nullptr), max_clusterid(LONG_MIN), file_name(filename),in_file_stream(filename),num_of_points(0),measurements(num_of_queries)  {
+            : properties_(nullptr), storageManager_(nullptr), tree_(nullptr), max_clusterid(LONG_MIN), file_name(filename),in_file_stream(filename),num_of_points(0),measurements(num_of_queries),dimensionality(0)  {
 
-        uint32_t dimensionality=getDimensionality();
+        max_clusterid = std::numeric_limits<long>::min();
+        m_fin.open(filename);
+
+        if (!m_fin)
+            throw Tools::IllegalArgumentException("Input file not found.");
+        //get required info from headers
+        readHeaders();
+        //usefull for finding random points
         findRandomIndices();
+
         std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
         file_size= in.tellg();
 
@@ -171,6 +252,8 @@ public:
     }
 
     std::vector<Point> getRandomPoints();
+
+
 };
 
 #endif //THESIS_CALLSPATIALLIBRARY_H
