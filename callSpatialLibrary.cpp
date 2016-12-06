@@ -81,16 +81,7 @@ void CallSpatialLib::readPoints() {
 }
 
 
-uint32_t CallSpatialLib::call_lib_spatial(Point const &point) {
-    MyVisitor visitor(max_clusterid);
-//    int k=1;
-    std::vector<double> const &point_coordinates = point.getCoordinates();
-    ulong dimen = point_coordinates.size();
-    double coordinates[dimen];
-
-
-    std::copy(point_coordinates.begin(), point_coordinates.end(), coordinates);
-
+uint32_t CallSpatialLib::call_lib_spatial(Point &point, MyVisitor visitor, ulong dimen, double *coordinates) {
 //    tree_->nearestNeighborQuery(k, SpatialIndex::Point(coordinates, dimen), visitor);
     tree_->pointLocationQuery(SpatialIndex::Point(coordinates, dimen), visitor);
 
@@ -102,6 +93,10 @@ std::vector<Point> CallSpatialLib::getRandomPoints() {
 
     return random_points;
 
+}
+
+uint32_t CallSpatialLib::getMax_clusterid() const {
+    return max_clusterid;
 }
 
 

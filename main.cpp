@@ -62,8 +62,15 @@ int main(int argc, char **argv) {
 
         cout << "looking for point:" << point.getPoint_id() << " that belongs in cluster:" << point.getCluster_id()
              << endl;
+        CallSpatialLib::MyVisitor visitor(callSpatialLib.getMax_clusterid());
+        std::vector<double> const &point_coordinates = point.getCoordinates();
+        ulong dimen = point_coordinates.size();
+        double coordinates[dimen];
+
+
+        std::copy(point_coordinates.begin(), point_coordinates.end(), coordinates);
         t1 = std::chrono::high_resolution_clock::now();
-        cluster_id = callSpatialLib.call_lib_spatial(point);
+        cluster_id = callSpatialLib.call_lib_spatial(point, visitor, dimen, coordinates);
         t2 = std::chrono::high_resolution_clock::now();
         cout << "cluster_id:" << cluster_id << endl;
         if (cluster_id != point.getCluster_id()) {

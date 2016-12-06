@@ -18,6 +18,34 @@ class CallSpatialLib {
 
 
 
+private:
+    /** The number of state dimensions for this RTree. */
+    /** The properties of the RTree. */
+    std::unique_ptr<Tools::PropertySet> properties_;
+    /** A storage manager for the RTree. */
+    std::unique_ptr<SpatialIndex::IStorageManager> storageManager_;
+    /** The RTree itself. */
+    std::unique_ptr<SpatialIndex::ISpatialIndex> tree_;
+//    std::unique_ptr<SpatialIndex::RTree::RTree> tree_;
+    uint32_t max_clusterid;
+public:
+    uint32_t getMax_clusterid() const;
+
+private:
+    uint32_t cluster_size;
+    std::ifstream m_fin;
+    std::string file_name;
+
+    std::ifstream in_file_stream;
+    long file_size;
+    uint32_t num_of_points;
+    uint32_t num_of_clusters;
+    std::set<uint32_t> random_indices;
+    uint32_t measurements;
+    std::vector<Point> random_points;
+    uint32_t dimensionality;
+
+public:
     class MyVisitor : public SpatialIndex::IVisitor {
 
     private:
@@ -77,30 +105,8 @@ class CallSpatialLib {
         std::vector<size_t> _indices;
     };
 
-private:
-    /** The number of state dimensions for this RTree. */
-    /** The properties of the RTree. */
-    std::unique_ptr<Tools::PropertySet> properties_;
-    /** A storage manager for the RTree. */
-    std::unique_ptr<SpatialIndex::IStorageManager> storageManager_;
-    /** The RTree itself. */
-    std::unique_ptr<SpatialIndex::ISpatialIndex> tree_;
-//    std::unique_ptr<SpatialIndex::RTree::RTree> tree_;
-    uint32_t max_clusterid;
-    uint32_t cluster_size;
-    std::ifstream m_fin;
-    std::string file_name;
 
-    std::ifstream in_file_stream;
-    long file_size;
-    uint32_t num_of_points;
-    uint32_t num_of_clusters;
-    std::set<uint32_t> random_indices;
-    uint32_t measurements;
-    std::vector<Point> random_points;
-    uint32_t dimensionality;
 
-public:
 
     void findRandomIndices() {
         auto n=0;
@@ -241,7 +247,7 @@ public:
     void insert_point(std::unique_ptr<SpatialIndex::ISpatialIndex>::pointer index, double coords[],
                       unsigned int num_of_coordinates, int id, uint32_t cluster_id);
 
-    uint32_t call_lib_spatial(Point  const &point);
+    uint32_t call_lib_spatial(Point &point, MyVisitor visitor, ulong i, double pDouble[]);
 
 
 
