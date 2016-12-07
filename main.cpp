@@ -10,7 +10,7 @@ using std::vector;
 using std::string;
 using std::endl;
 
-void calculate_statistics(vector<double> &times, float file_size) {
+void calculate_statistics(uint32_t dimen,vector<double> &times, float file_size) {
 
     //sort times
     std::sort(times.begin(), times.end());
@@ -36,7 +36,8 @@ void calculate_statistics(vector<double> &times, float file_size) {
 
 
     cout << "#Dataset size|Time|Standard error" << endl;
-    cout << "bst:" << file_size / GB << "\t" << mean << "\t" << std_error << "\t" << endl;
+//    cout << "bst:" << file_size / GB << "\t" << mean << "\t" << std_error << "\t" << endl;
+    cout << "bst:" << dimen  << "\t" << mean << "\t" << std_error << "\t" << endl;
 
 }
 
@@ -86,7 +87,7 @@ int main(int argc, char **argv) {
 
 //    callSpatialLib.printRtreeStatistics();
 
-    calculate_statistics(times, (float) callSpatialLib.getFileSize());
+    calculate_statistics(random_points[0].getCoordinates().size(), times, (float) callSpatialLib.getFileSize());
     exit(111);
 
 }

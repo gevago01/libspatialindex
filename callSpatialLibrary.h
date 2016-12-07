@@ -168,7 +168,7 @@ public:
             std::string temp_str;
             // go to the last token
             while (file_info >> temp_str){
-                ++dimensionality;
+
             }
             //last token is cluster size
             cluster_size = std::stol(temp_str);
@@ -176,6 +176,15 @@ public:
             max_clusterid = num_of_clusters;
             num_of_points = num_of_clusters * cluster_size;
             std::cout << "Number of points:" << num_of_points << std::endl;
+            return false;
+        }
+
+        if ((line.find("Normal") != std::string::npos)) {
+            ++dimensionality;
+            return false;
+        }
+
+        if ((line.find("Discards") != std::string::npos)) {
             std::cout << "Dimensionality:" << dimensionality << std::endl;
             return true;
         }
